@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Buyer Application</title>
+</head>
+<body>
+  <h1>Каталог товаров (GraphQL)</h1>
+  <div id="catalog"></div>
+
+  <h2>Чат поддержки</h2>
+  <div id="chat"></div>
+  <input type="text" id="message" placeholder="Введите сообщение">
+  <button id="send">Отправить</button>
+
+  <script>
+    // Пример GraphQL-запроса для получения только name и price
+    const query = `
+      query {
+        products {
+          name
+          price
+        }
+      }
+    `;
+    fetch('http://localhost:3001/graphql', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query })
+    })
+    .then(res => res.json())
+    .then(data => {
+      const catalog = document.getElementById('catalog');
+      data.data.products.forEach(product => {
+        const card = document.createElement('div');
+        card.textContent = product.name + ' - $' + product.price;
+        catalog.appendChild(card);
+      });
+    })
+    .catch(err => console.error(err));
+
+    // Обработка WebSocket сообщений с использованием FileReader для преобразования Blob в текст
+    const ws = new WebSocket('ws://localhost:4000');
+    ws.binaryType = "blob"; // явно задаем тип бинарных данных
+    const chatDiv = document.getElementById('chat');
+    
+    ws.onmessage = (event) => {
+      if (event.data instanceof Blob) {
+        const reader = new FileReader();
+        reader.onload = function() {
+          const text = reader.result;
+          const p = document.createElement('p');
+          p.textContent = text;
+          chatDiv.appendChild(p);
+        };
+        reader.readAsText(event.data);
+      } else {
+        const p = document.createElement('p');
+        p.textContent = event.data;
+        chatDiv.appendChild(p);
+      }
+    };
+
+    document.getElementById('send').onclick = () => {
+      const message = document.getElementById('message').value;
+      ws.send(message);
+    };
+  </script>
+</body>
+</html>

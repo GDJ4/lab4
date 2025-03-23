@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel</title>
+</head>
+<body>
+  <h1>Панель администратора (REST API)</h1>
+  <div id="productList"></div>
+
+  <h2>Чат поддержки</h2>
+  <div id="chat"></div>
+  <input type="text" id="message" placeholder="Введите сообщение">
+  <button id="send">Отправить</button>
+
+  <script>
+    // Получаем список товаров через REST API
+    fetch('http://localhost:3000/api/products')
+      .then(res => res.json())
+      .then(products => {
+        const productList = document.getElementById('productList');
+        products.forEach(product => {
+          const div = document.createElement('div');
+          div.textContent = product.name + ' - $' + product.price;
+          productList.appendChild(div);
+        });
+      })
+      .catch(err => console.error(err));
+
+    // Создаем WebSocket соединение и устанавливаем бинарный тип данных как blob
+    const ws = new WebSocket('ws://localhost:4000');
+    ws.binaryType = "blob";
+    const chatDiv = document.getElementById('chat');
+
+    ws.onmessage = (event) => {
+      if (event.data instanceof Blob) {
+        const reader = new FileReader();
+        reader.onload = function() {
+          const text = reader.result;
+          const p = document.createElement('p');
+          p.textContent = text;
+          chatDiv.appendChild(p);
+        };
+        reader.readAsText(event.data);
+      } else {
+        const p = document.createElement('p');
+        p.textContent = event.data;
+        chatDiv.appendChild(p);
+      }
+    };
+
+    document.getElementById('send').onclick = () => {
+      const message = document.getElementById('message').value;
+      ws.send(message);
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+[
+    {
+      "id": 1,
+      "name": "Product One",
+      "price": 10,
+      "description": "Description of product one.",
+      "categories": ["Category A"]
+    },
+    {
+      "id": 2,
+      "name": "Product Two",
+      "price": 20,
+      "description": "Description of product two.",
+      "categories": ["Category B"]
+    },
+    {
+      "id": 3,
+      "name": "Product Three",
+      "price": 30,
+      "description": "Description of product three.",
+      "categories": ["Category A", "Category B"]
+    },
+    {
+      "id": 4,
+      "name": "Product Four",
+      "price": 40,
+      "description": "Description of product four.",
+      "categories": ["Category A"]
+    },
+    {
+      "id": 5,
+      "name": "Product Five",
+      "price": 50,
+      "description": "Description of product five.",
+      "categories": ["Category B"]
+    }
+  ]
+  
