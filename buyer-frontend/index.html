@@ -14,7 +14,6 @@
   <button id="send">Отправить</button>
 
   <script>
-    // Пример GraphQL-запроса для получения только name и price
     const query = `
       query {
         products {
@@ -39,7 +38,6 @@
     })
     .catch(err => console.error(err));
 
-    // Обработка WebSocket сообщений с использованием FileReader для преобразования Blob в текст
     const ws = new WebSocket('ws://localhost:4000');
     ws.binaryType = "blob"; // явно задаем тип бинарных данных
     const chatDiv = document.getElementById('chat');

@@ -7,7 +7,6 @@ const port = 3000;
 
 app.use(bodyParser.json());
 
-// Загружаем товары из файла data/products.json
 const productsPath = path.join(__dirname, 'data', 'products.json');
 let products = require(productsPath);
 
@@ -15,12 +14,11 @@ function saveProducts() {
   fs.writeFileSync(productsPath, JSON.stringify(products, null, 2));
 }
 
-// Получение списка товаров
+
 app.get('/api/products', (req, res) => {
   res.json(products);
 });
 
-// Добавление товаров (одного или нескольких)
 app.post('/api/products', (req, res) => {
   const newProducts = Array.isArray(req.body) ? req.body : [req.body];
   newProducts.forEach(product => {
@@ -31,7 +29,6 @@ app.post('/api/products', (req, res) => {
   res.json({ message: 'Products added', products: newProducts });
 });
 
-// Редактирование товара по ID
 app.put('/api/products/:id', (req, res) => {
   const id = parseInt(req.params.id);
   let product = products.find(p => p.id === id);
@@ -43,7 +40,7 @@ app.put('/api/products/:id', (req, res) => {
   res.json({ message: 'Product updated', product });
 });
 
-// Удаление товара по ID
+
 app.delete('/api/products/:id', (req, res) => {
   const id = parseInt(req.params.id);
   const index = products.findIndex(p => p.id === id);

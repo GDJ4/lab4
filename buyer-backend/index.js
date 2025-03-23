@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 const { ApolloServer, gql } = require('apollo-server-express');
 
-// Загружаем товары из файла data/products.json
 const products = require(path.join(__dirname, 'data', 'products.json'));
 
 const typeDefs = gql`
@@ -15,7 +14,6 @@ const typeDefs = gql`
   }
 
   type Query {
-    # Клиент может запросить только необходимые поля, например: name и price
     products: [Product]
   }
 `;

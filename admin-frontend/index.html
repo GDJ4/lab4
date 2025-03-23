@@ -14,7 +14,7 @@
   <button id="send">Отправить</button>
 
   <script>
-    // Получаем список товаров через REST API
+
     fetch('http://localhost:3000/api/products')
       .then(res => res.json())
       .then(products => {
@@ -27,7 +27,6 @@
       })
       .catch(err => console.error(err));
 
-    // Создаем WebSocket соединение и устанавливаем бинарный тип данных как blob
     const ws = new WebSocket('ws://localhost:4000');
     ws.binaryType = "blob";
     const chatDiv = document.getElementById('chat');
